@@ -11,6 +11,7 @@ Key features of the Architecture are :-
 * JWT authentication
 * Containerised Services
 * Deployed in Kubernetes Cluster
+* Deployment managed by Scaffold
 * DevOps (CI | CD)
 
 The Client/Front-end is developed using React Js
