@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { Password } from "../services/password";
 
 // Interface that describes properties required to create this model
 interface UserAttrs {
@@ -26,6 +27,15 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+});
+//This runs everytime before UserSchema.save
+userSchema.pre("save", async function (done) {
+  //Only rehash password if User is created for first time or User's password is modified
+  if (this.isModified("password")) {
+    const hashedPassowrd = await Password.toHash(this.get("password"));
+    this.set("password", hashedPassowrd);
+  }
+  done();
 });
 
 // Because of typescript to create a new user use this fn
