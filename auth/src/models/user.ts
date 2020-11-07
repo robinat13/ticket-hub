@@ -18,16 +18,29 @@ interface UserDoc extends mongoose.Document {
   password: string;
 }
 
-const userSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: true,
+const userSchema = new mongoose.Schema(
+  {
+    email: {
+      type: String,
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
   },
-  password: {
-    type: String,
-    required: true,
-  },
-});
+  //Searializing the Object to Json method to return custom properties
+  {
+    toJSON: {
+      transform(doc, ret) {
+        delete ret.password;
+        ret.id = doc._id;
+        delete ret._id;
+        delete ret.__v;
+      },
+    },
+  }
+);
 //This runs everytime before UserSchema.save
 userSchema.pre("save", async function (done) {
   //Only rehash password if User is created for first time or User's password is modified
