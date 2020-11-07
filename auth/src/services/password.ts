@@ -3,7 +3,7 @@ import { promisify } from "util";
 
 const scryptAsync = promisify(scrypt);
 
-export class Password {
+export class PasswordManager {
   static async toHash(passowrd: string) {
     const salt = randomBytes(8).toString("hex");
     const buffer = (await scryptAsync(passowrd, salt, 64)) as Buffer;
